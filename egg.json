@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-04-30T00:04:57+03:00",
+    "name": "WebMultiEgg",
+    "author": "darknessyt@inbox.ru",
+    "description": "Powered by _DarkNessYT.",
+    "features": null,
+    "docker_images": {
+        "darknessyt\/webmultiegg": "darknessyt\/webmultiegg"
+    },
+    "file_denylist": [],
+    "startup": ".\/.eggSystem\/start.sh",
+    "config": {
+        "files": "{\r\n    \"nginx\/conf\/nginx.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"        listen\": \"        listen {{server.build.default.port}};\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"\"\r\n}",
+        "logs": "{}",
+        "stop": "^Z"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\necho -e \"\\n\\n\\nWebMultiEgg Installer by _DarkNessYT\\n\"\r\necho -e \"\u041e\u0447\u0438\u0441\u0442\u043a\u0430 \u043f\u0430\u043f\u043a\u0438 \u0441\u0435\u0440\u0432\u0435\u0440\u0430...\"\r\nrm -rf \/mnt\/server\/{*,.*}\r\nmkdir -p \/mnt\/server\r\nmkdir -p \/mnt\/server\/.eggSystem\r\necho -e \"\\n\\n\\n\u0423\u0441\u043f\u0435\u0448\u043d\u043e.\\n\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u0430\u043a\u0435\u0442\u043e\u0432.\"\r\napt-get update\r\napt-get -y upgrade\r\necho -e \"\\n\\n\\n\u0423\u0441\u043f\u0435\u0448\u043d\u043e.\\n\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430 \u043f\u0430\u043a\u0435\u0442\u043e\u0432 \u0438 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0435\u0439.\"\r\napt-get -y install wget ca-certificates build-essential libzip-dev libtidy-dev libonig-dev\r\napt-get -y install libpcre3-dev libssl-dev openssl zlib1g-dev libreadline-dev perl libncurses5-dev\r\napt-get -y install gnupg libxml2-dev libbz2-dev libcurl4-openssl-dev sqlite3 libsqlite3-dev\r\napt-get -y install libjpeg-dev libpng-dev libmcrypt-dev libfreetype6-dev libxslt-dev\r\napt-get -y install libcppunit-dev g++ librevenge-dev\r\napt-get -y install libicu-dev gperf pkg-config\r\napt-get update\r\napt-get -y upgrade\r\nchmod -R 777 \/mnt\/server\r\necho -e \"\\n\\n\\n\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0430.\\n\"",
+            "container": "debian:buster-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": []
+}
