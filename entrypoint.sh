@@ -6,6 +6,6 @@ cd /home/container/.eggSystem
 if [ -f "/home/container/.eggSystem/updater.sh" ]; then
     rm /home/container/.eggSystem/updater.sh
 fi
-wget -O updater.sh https://cdn.splash-bot.ru/webmultiegg/updater.sh -q -o /dev/null && chmod 755 updater.sh
+wget -O updater.sh https://raw.githubusercontent.com/iidarknessyt/pterodactyl-webmultiegg/main/updater.sh -q -o /dev/null && chmod 755 updater.sh
 cd ..
 eval ./.eggSystem/updater.sh
