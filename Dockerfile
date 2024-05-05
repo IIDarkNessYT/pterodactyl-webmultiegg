@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye
 LABEL author="_DarkNessYT" maintainer="darknessyt@inbox.ru"
 
 ENV DEBIAN_FRONTEND=noninteractive
