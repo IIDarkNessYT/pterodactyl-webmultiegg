@@ -111,6 +111,7 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
             sleep 9
             download_openresty
             download_php $PVER
+            apt-get install -y pkg-config
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для OpenResty и PHP...\nㅤ"
             cd .eggSystem
             touch Config
