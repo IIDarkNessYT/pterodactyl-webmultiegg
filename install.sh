@@ -11,7 +11,7 @@ echo -e "\n\n\nУспешно.\nУстановка пакетов и завис�
 apt-get -y install pkg-config libxml2 libxml2-dev
 export LIBXML_CFLAGS=$(xml2-config --cflags)
 export LIBXML_LIBS=$(xml2-config --libs)
-apt-get -y install ca-certificates build-essential libzip-dev libtidy-dev libonig-dev
+apt-get -y install wget curl ca-certificates build-essential libzip-dev libtidy-dev libonig-dev
 apt-get -y install libpcre3-dev libssl-dev openssl zlib1g-dev libreadline-dev perl libncurses5-dev
 apt-get -y install gnupg libbz2-dev libcurl4-openssl-dev sqlite3 libsqlite3-dev
 apt-get -y install libjpeg-dev libpng-dev libmcrypt-dev libfreetype6-dev libxslt-dev
