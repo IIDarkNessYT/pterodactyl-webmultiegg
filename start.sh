@@ -25,7 +25,7 @@ download_openresty() { # Скачивание рести
 
 download_php() {
     wget -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.12/libxml2-2.12.6.tar.xz
-    tar -xzf libxml.tar.xz
+    tar -Jxvf libxml.tar.xz
     cd libxml2-2.12.6
     ./configure --prefix=/home/container/libxml2
     make
