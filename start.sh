@@ -103,9 +103,9 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
             select_php_version
             clear
             ITER=0
-            while [ $ITER -ne 55 ]
+            while [ $ITER -ne 6 ]
             do
-                echo -en "\nㅤ\033[1;33mWebMultiEgg: \033[22;31mВНИМАНИЕ! ЧЕРЕЗ 10 СЕКУНД НАЧНЁТСЯ УСТАНОВКА OPENRESTY + PHP $PVER"
+                echo -en "\nㅤ\033[1;33mWebMultiEgg: \033[22;31mВНИМАНИЕ! ЧЕРЕЗ 10 СЕКУНД НАЧНЁТСЯ УСТАНОВКА OPENRESTY + PHP $PVERㅤ\nㅤ"
                 ((ITER++))
             done
             sleep 9
