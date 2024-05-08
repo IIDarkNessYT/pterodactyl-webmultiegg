@@ -32,6 +32,7 @@ download_php() {
     make install
     export LD_LIBRARY_PATH=/home/container/libxml2/lib:$LD_LIBRARY_PATH
     export PKG_CONFIG_PATH=/home/container/libxml2/lib/pkgconfig:$PKG_CONFIG_PATH
+    sleep 60
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива PHP-FPM...\nㅤ"
     wget https://www.php.net/distributions/php-$1.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива PHP-FPM...\nㅤ"
