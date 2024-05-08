@@ -8,7 +8,7 @@ echo -e "\n\n\nУспешно.\nОбновление пакетов."
 apt-get update
 apt-get -y upgrade
 echo -e "\n\n\nУспешно.\nУстановка пакетов и зависимостей."
-apt-get -y install curl pkg-config
+apt-get -y install curl pkg-config python3
 apt-get -y install wget ca-certificates build-essential libzip-dev libtidy-dev libonig-dev
 apt-get -y install libpcre3-dev libssl-dev openssl zlib1g-dev libreadline-dev perl libncurses5-dev
 apt-get -y install gnupg libbz2-dev libcurl4-openssl-dev sqlite3 libsqlite3-dev
