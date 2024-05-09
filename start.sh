@@ -132,7 +132,7 @@ else
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "openresty with php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mOpenResty был успешно запущен. Все логи находятся в папке /nginx/logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /nginx.\nㅤ"
-        ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
+        ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize | grep openssl
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
 fi
