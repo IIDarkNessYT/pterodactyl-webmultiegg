@@ -92,7 +92,9 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите интересующий вас веб-сервер для установки:\nㅤ"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) Скачивание и компиляция OpenResty без PHP-FPM"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) Скачивание и компиляция OpenResty вместе с PHP-FPM"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Выйти"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Скачивание и компиляция Nginx без PHP-FPM"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Скачивание и компиляция Nginx вместе с PHP-FPM"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
     read -s servertype
@@ -111,13 +113,6 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
             echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤ\033[1;33mТеперь нам нужно выбрать версию PHP."
             select_php_version
             clear
-            ITER=0
-            while [ $ITER -ne 20 ]
-            do
-                echo -en "\nㅤ\033[1;33mWebMultiEgg: \033[22;31mВНИМАНИЕ! ЧЕРЕЗ 10 СЕКУНД НАЧНЁТСЯ УСТАНОВКА OPENRESTY + PHP $PVERㅤ\nㅤ"
-                ((ITER++))
-            done
-            sleep 9
             download_openresty
             download_php $PVER
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для OpenResty и PHP...\nㅤ"
@@ -126,6 +121,12 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
             echo "SERVER_TYPE=\"openresty with php-fpm\"" > Config
             ;;
         3)
+            echo -en "ㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИзвините, но это пока-что в разработке..."
+            ;;
+        4)
+            echo -en "ㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИзвините, но это пока-что в разработке..."
+            ;;
+        5)
             echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
             exit 0
             ;;
