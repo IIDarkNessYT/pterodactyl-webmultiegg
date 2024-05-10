@@ -4,6 +4,7 @@ LABEL author="_DarkNessYT" maintainer="darknessyt@inbox.ru"
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get -y upgrade \
+    && apt-get -y install flex bison \
     && apt-get -y install curl python3 python pkg-config python-dev python2.7 \
     && apt-get -y install wget ca-certificates build-essential libzip-dev libtidy-dev libonig-dev \
     && apt-get -y install libpcre3-dev libssl-dev openssl zlib1g-dev libreadline-dev perl libncurses5-dev \
