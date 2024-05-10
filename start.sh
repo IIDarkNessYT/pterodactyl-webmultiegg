@@ -56,7 +56,7 @@ download_php() { # Скачивание PHP-FPM
     tar -xvf php-$1.tar.gz
     cd php-$1
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container --enable-mbstring --with-curl=/usr/include/x86_64-linux-gnu --with-openssl --with-zlib --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --with-config-file-path=/home/container/etc/php-fpm/ --with-config-file-scan-dir=/home/container/etc/php-fpm/php-fpm.d/
+    ./configure --prefix=/home/container --enable-mbstring --with-curl=/usr/include/x86_64-linux-gnu/curl --with-openssl --with-zlib --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --with-config-file-path=/home/container/etc/php-fpm/ --with-config-file-scan-dir=/home/container/etc/php-fpm/php-fpm.d/
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция PHP-FPM. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
@@ -187,7 +187,6 @@ else
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
-        echo "$(find / -name easy.h 2>/dev/null)"
         ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
