@@ -1,13 +1,13 @@
 
 # Функции
-download_openresty() { # Скачивание рести
+download_openresty() { # Скачивание OpenResty
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива OpenResty...\nㅤ"
-    OPENRESTY_VERSION=$(curl -s https://openresty.org/en/download.html | grep -o 'openresty-[0-9.]*' | head -n 1)
+    OPENRESTY_LATEST=$(curl -s https://openresty.org/en/download.html | grep -o 'openresty-[0-9.]*' | head -n 1)
     INSTALL_DIR="/home/container"
-    wget https://openresty.org/download/$OPENRESTY_VERSION.tar.gz
+    wget https://openresty.org/download/$OPENRESTY_LATEST.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива OpenResty...\nㅤ"
-    tar xzf $OPENRESTY_VERSION.tar.gz
-    cd $OPENRESTY_VERSION
+    tar xzf $OPENRESTY_LATEST.tar.gz
+    cd $OPENRESTY_LATEST
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
     ./configure --prefix=$INSTALL_DIR
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция OpenResty. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
@@ -19,11 +19,35 @@ download_openresty() { # Скачивание рести
     ldconfig
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
-    rm -rf $OPENRESTY_VERSION
-    rm $OPENRESTY_VERSION.tar.gz
+    rm -rf $OPENRESTY_LATEST
+    rm $OPENRESTY_LATEST.tar.gz
 }
 
-download_php() {
+download_nginx() { # Скачание Nginx
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива Nginx...\nㅤ"
+    NGINX_LATEST=$(curl -sL http://nginx.org/en/download.html | grep -Eo 'nginx-[0-9]+.[0-9]+.[0-9]+.tar.gz' | grep -v 'mainline' | sort -V | tail -1)
+    URL="http://nginx.org/download/${LATEST_STABLE}"
+    INSTALL_DIR="/home/container"
+    wget $URL
+    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива Nginx...\nㅤ"
+    # tar xzf $NGINX_LATEST.tar.gz
+    # cd $NGINX_LATEST
+    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
+    # ./configure --prefix=$INSTALL_DIR
+    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
+    # sleep 5
+    # make -j$(nproc)
+    # make install
+    # cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
+    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
+    # ldconfig
+    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
+    # cd ..
+    # rm -rf $NGINX_LATEST
+    # rm $NGINX_LATEST.tar.gz
+}
+
+download_php() { # Скачивание PHP-FPM
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива PHP-FPM...\nㅤ"
     wget https://www.php.net/distributions/php-$1.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива PHP-FPM...\nㅤ"
@@ -52,7 +76,7 @@ download_php() {
     rm php-$1.tar.gz
 }
 
-select_php_version() {
+select_php_version() { # Выбор версии PHP
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите версию PHP:\nㅤ"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 5.6.40"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 7.4.33"
@@ -77,7 +101,7 @@ select_php_version() {
     esac
 }
 
-if [ ! -f "/home/container/.eggSystem/Config" ]; then
+if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсутствия этого файла система попросит установить интересующий веб-сервер
     clear
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤ\033[1;31mДобро пожаловать.\nㅤㅤㅤㅤВас приветствует мастер установки программного обеспечения для веб-серверов расположенных на серверах Pterodactyl."
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите интересующий вас веб-сервер для установки:\nㅤ"
@@ -112,10 +136,25 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then
             echo "SERVER_TYPE=\"openresty with php-fpm\"" > Config
             ;;
         3)
-            echo -en "ㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИзвините, но это пока-что в разработке..."
+            clear
+            echo -en "ㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mВы выбрали скачивание и компиляцию Nginx без PHP-FPM."
+            download_nginx
+            echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для Nginx...\nㅤ"
+            cd .eggSystem
+            touch Config
+            echo "SERVER_TYPE=\"nginx without php-fpm\"" > Config
             ;;
         4)
-            echo -en "ㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИзвините, но это пока-что в разработке..."
+            clear
+            echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤ\033[1;33mТеперь нам нужно выбрать версию PHP."
+            select_php_version
+            clear
+            download_nginx
+            download_php $PVER
+            echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для Nginx и PHP...\nㅤ"
+            cd .eggSystem
+            touch Config
+            echo "SERVER_TYPE=\"nginx with php-fpm\"" > Config
             ;;
         5)
             echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
