@@ -66,17 +66,10 @@ download_php() { # Скачивание PHP-FPM
     cp php.ini-development /home/container/etc/php.ini
     php_block="location ~ \\\.php\$ { fastcgi_pass unix:/home/container/var/run/php-fpm.sock; fastcgi_index index.php; include fastcgi_params; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; }"
     searchB="        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
-    if [ "$2" = "openresty"]; then
-        sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
-        sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
-        sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
-        sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
-    elif [ "$2" = "nginx" ]; then
-        sed -i "/^$searchB/a         $php_block" /home/container/conf/nginx.conf
-        sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/conf/nginx.conf
-        sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/conf/nginx.conf
-        sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
-    fi
+    sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
+    sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
+    sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
+    sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция PHP-FPM прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
