@@ -29,7 +29,7 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container
+    ./configure --prefix=/home/container --sbin-path=/home/container/sbin --pid-path=/home/container/var/run/nginx.pid --conf-path=/home/container/conf/nginx.conf --with-http_ssl_module --without-http_rewrite_module
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
@@ -175,10 +175,10 @@ else
         ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx without php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx и /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /nginx и /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /conf.\nㅤ"
         ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
