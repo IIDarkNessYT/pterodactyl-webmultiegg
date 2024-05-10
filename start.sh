@@ -3,13 +3,12 @@
 download_openresty() { # Скачивание OpenResty
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива OpenResty...\nㅤ"
     OPENRESTY_LATEST=$(curl -s https://openresty.org/en/download.html | grep -o 'openresty-[0-9.]*' | head -n 1)
-    INSTALL_DIR="/home/container"
     wget https://openresty.org/download/$OPENRESTY_LATEST.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива OpenResty...\nㅤ"
     tar xzf $OPENRESTY_LATEST.tar.gz
     cd $OPENRESTY_LATEST
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=$INSTALL_DIR
+    ./configure --prefix=/home/container
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция OpenResty. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
@@ -30,14 +29,13 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=$INSTALL_DIR
+    ./configure --prefix=/home/container
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
     make install
     cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
-    ldconfig
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
     rm -rf nginx-1.26.0
