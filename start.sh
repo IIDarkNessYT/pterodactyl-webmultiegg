@@ -79,28 +79,20 @@ download_php() { # Скачивание PHP-FPM
 
 select_php_version() { # Выбор версии PHP
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите версию PHP:\nㅤ"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 4.4.9"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 5.6.40"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) PHP 7.4.33"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) PHP 8.3.6"
-    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Выйти"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 7.4.33"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 8.3.6"
+    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
     read -s phpvers
     case $phpvers in
         1)
-            PVER="4.4.9"
-            ;;
-        2)
-            PVER="5.6.40"
-            ;;
-        3)
             PVER="7.4.33"
             ;;
-        4)
+        2)
             PVER="8.3.6"
             ;;
-        5)  
+        3)  
             echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
             exit 0
             ;;
