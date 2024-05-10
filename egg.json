@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2024-05-08T19:18:06+02:00",
+    "exported_at": "2024-05-10T13:25:30+03:00",
     "name": "WebMultiEgg",
     "author": "darknessyt@inbox.ru",
     "description": "Powered by _DarkNessYT.",
@@ -15,7 +15,7 @@
     "file_denylist": [],
     "startup": ".\/.eggSystem\/start.sh",
     "config": {
-        "files": "{\r\n    \"nginx\/conf\/nginx.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"        listen\": \"        listen {{server.build.default.port}};\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"nginx\/conf\/nginx.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"        listen\": \"        listen {{server.build.default.port}};\",\r\n            \"            root   html;\": \"            root   \/home\/container\/nginx\/html;\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"\"\r\n}",
         "logs": "{}",
         "stop": "^Z"

@@ -79,22 +79,30 @@ download_php() { # Скачивание PHP-FPM
 
 select_php_version() { # Выбор версии PHP
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите версию PHP:\nㅤ"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 5.6.40"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 7.4.33"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) PHP 8.3.6"
-    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Выйти"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 4.4.9"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 5.6.40"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) PHP 7.4.33"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) PHP 8.3.6"
+    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
     read -s phpvers
     case $phpvers in
         1)
-            PVER="5.6.40"
+            PVER="4.4.9"
             ;;
         2)
-            PVER="7.4.33"
+            PVER="5.6.40"
             ;;
         3)
+            PVER="7.4.33"
+            ;;
+        4)
             PVER="8.3.6"
+            ;;
+        5)  
+            echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
+            exit 0
             ;;
         *)
             echo -en "\033[1;31mНекорректный выбор. Пожалуйста, попробуйте ещё раз!"
@@ -178,7 +186,7 @@ else
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37m {{SERVER_PORT}} Nginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /conf.\nㅤ"
         ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
