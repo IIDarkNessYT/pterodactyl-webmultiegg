@@ -166,7 +166,7 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             ;;
     esac
 else
-    source /home/container/.eggSystem/Config
+    source /home/container/.eggSystem/Config # Стартовые команды для серверов
     if [ "$SERVER_TYPE" = "openresty without php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mOpenResty был успешно запущен. Все логи находятся в папке /nginx/logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /nginx.\nㅤ"
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
@@ -178,7 +178,7 @@ else
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37m {{SERVER_PORT}} Nginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /conf.\nㅤ"
         ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
