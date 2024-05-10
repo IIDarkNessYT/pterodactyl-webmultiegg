@@ -29,11 +29,13 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container --sbin-path=/home/container/sbin/nginx --pid-path=/home/container/var/run/nginx.pid --conf-path=/home/container/conf/nginx.conf --with-http_ssl_module --without-http_rewrite_module
+    ./configure --prefix=/home/container --sbin-path=/home/container/sbin/nginx --conf-path=/home/container/conf/nginx.conf --error-log-path=/home/container/logs/error.log --http-log-path=/home/container/logs/access.log --pid-path=/home/container/var/run/nginx.pid --lock-path=/home/container/var/run/nginx.lock --http-client-body-temp-path=/home/container/temp/client_body --http-proxy-temp-path=/home/container/temp/proxy --http-fastcgi-temp-path=/home/container/temp/fastcgi --http-scgi-temp-path=/home/container/temp/scgi --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-file-aio --with-threads --http-uwsgi-temp-path=/home/container/temp/uwsgi --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-mail --with-mail_ssl_module 
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
     make install
+    touch /home/container/logs/access.log
+    touch /home/container/logs/error.log
     cp -f /home/container/conf/nginx.conf.default /home/container/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
