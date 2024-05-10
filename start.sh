@@ -29,7 +29,7 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container --sbin-path=/home/container/sbin --pid-path=/home/container/var/run/nginx.pid --conf-path=/home/container/conf/nginx.conf --with-http_ssl_module --without-http_rewrite_module
+    ./configure --prefix=/home/container --sbin-path=/home/container/sbin/nginx --pid-path=/home/container/var/run/nginx.pid --conf-path=/home/container/conf/nginx.conf --with-http_ssl_module --without-http_rewrite_module
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
