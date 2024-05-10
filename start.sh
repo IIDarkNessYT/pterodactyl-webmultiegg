@@ -36,6 +36,11 @@ download_nginx() { # Скачание Nginx
     make install
     touch /home/container/logs/access.log
     touch /home/container/logs/error.log
+    mkdir -p /home/container/temp/client_body
+    mkdir -p /home/container/temp/proxy
+    mkdir -p /home/container/temp/fastcgi
+    mkdir -p /home/container/temp/uwsgi
+    mkdir -p /home/container/temp/scgi
     cp -f /home/container/conf/nginx.conf.default /home/container/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
