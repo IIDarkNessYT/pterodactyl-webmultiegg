@@ -25,7 +25,7 @@ download_openresty() { # Скачивание OpenResty
 
 download_nginx() { # Скачание Nginx
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива Nginx...\nㅤ"
-    NGINX_LATEST=$(curl -sL http://nginx.org/download | grep -o 'nginx-[0-9]+.[0-9]+.[0-9]+.tar.gz')
+    NGINX_LATEST=$(curl -sL http://nginx.org/download | grep -o 'nginx-1.[0-9]*.[0-9]*.tar.gz' | head -n 1)
     echo $NGINX_LATEST
     URL="http://nginx.org/download/${LATEST_STABLE}"
     INSTALL_DIR="/home/container"
