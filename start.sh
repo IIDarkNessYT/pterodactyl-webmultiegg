@@ -34,7 +34,7 @@ download_nginx() { # Скачание Nginx
     sleep 5
     make -j$(nproc)
     make install
-    cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
+    cp -f /home/container/conf/nginx.conf.default /home/container/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
@@ -59,12 +59,18 @@ download_php() { # Скачивание PHP-FPM
     cp php.ini-development /home/container/etc/php.ini
     php_block="location ~ \\\.php\$ { fastcgi_pass unix:/home/container/var/run/php-fpm.sock; fastcgi_index index.php; include fastcgi_params; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; }"
     searchB="        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
-    sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
-    sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
-    sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
-    sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
+    if [ "$2" = "openresty"]; then
+        sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
+        sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
+        sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
+        sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
+    elif [ "$2" = "nginx" ]; then
+        sed -i "/^$searchB/a         $php_block" /home/container/conf/nginx.conf
+        sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/conf/nginx.conf
+        sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/conf/nginx.conf
+        sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
+    fi
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция PHP-FPM прошла успешно.\nㅤ"
-    ldconfig
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
     rm -rf php-$1
@@ -124,7 +130,7 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             select_php_version
             clear
             download_openresty
-            download_php $PVER
+            download_php $PVER openresty
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для OpenResty и PHP...\nㅤ"
             cd .eggSystem
             touch Config
@@ -145,7 +151,7 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             select_php_version
             clear
             download_nginx
-            download_php $PVER
+            download_php $PVER nginx
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для Nginx и PHP...\nㅤ"
             cd .eggSystem
             touch Config
