@@ -25,27 +25,23 @@ download_openresty() { # Скачивание OpenResty
 
 download_nginx() { # Скачание Nginx
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива Nginx...\nㅤ"
-    NGINX_LATEST=$(curl -sL http://nginx.org/download | grep -o 'nginx-1.[0-9]*.[0-9]*.tar.gz' | head -n 1)
-    echo $NGINX_LATEST
-    URL="http://nginx.org/download/${LATEST_STABLE}"
-    INSTALL_DIR="/home/container"
-    wget $URL
-    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива Nginx...\nㅤ"
-    # tar xzf $NGINX_LATEST.tar.gz
-    # cd $NGINX_LATEST
-    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    # ./configure --prefix=$INSTALL_DIR
-    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
-    # sleep 5
-    # make -j$(nproc)
-    # make install
-    # cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
-    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
-    # ldconfig
-    # echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
-    # cd ..
-    # rm -rf $NGINX_LATEST
-    # rm $NGINX_LATEST.tar.gz
+    wget http://nginx.org/download/nginx-1.26.0.tar.gz
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива Nginx...\nㅤ"
+    tar xzf nginx-1.26.0.tar.gz
+    cd nginx-1.26.0
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
+    ./configure --prefix=$INSTALL_DIR
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
+    sleep 5
+    make -j$(nproc)
+    make install
+    cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
+    ldconfig
+    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
+    cd ..
+    rm -rf nginx-1.26.0
+    rm nginx-1.26.0.tar.gz
 }
 
 download_php() { # Скачивание PHP-FPM
