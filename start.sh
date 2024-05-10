@@ -29,19 +29,19 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container --sbin-path=/home/container/sbin/nginx --conf-path=/home/container/conf/nginx.conf --error-log-path=/home/container/logs/error.log --http-log-path=/home/container/logs/access.log --pid-path=/home/container/logs/nginx.pid --http-client-body-temp-path=/home/container/client_body_temp --http-proxy-temp-path=/home/container/proxy_temp --http-fastcgi-temp-path=/home/container/fastcgi_temp --http-scgi-temp-path=/home/container/scgi_temp --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-file-aio --with-threads --http-uwsgi-temp-path=/home/container/uwsgi_temp --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-mail --with-mail_ssl_module 
+    ./configure --prefix=/home/container/nginx --sbin-path=/home/container/sbin/nginx --conf-path=/home/container/nginx/conf/nginx.conf --error-log-path=/home/container/nginx/logs/error.log --http-log-path=/home/container/nginx/logs/access.log --pid-path=/home/container/nginx/logs/nginx.pid --http-client-body-temp-path=/home/container/nginx/client_body_temp --http-proxy-temp-path=/home/container/nginx/proxy_temp --http-fastcgi-temp-path=/home/container/nginx/fastcgi_temp --http-scgi-temp-path=/home/container/nginx/scgi_temp --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-file-aio --with-threads --http-uwsgi-temp-path=/home/container/nginx/uwsgi_temp --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-mail --with-mail_ssl_module 
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
     make install
-    touch /home/container/logs/access.log
-    touch /home/container/logs/error.log
-    mkdir -p /home/container/client_body_temp
-    mkdir -p /home/container/proxy_temp
-    mkdir -p /home/container/fastcgi_temp
-    mkdir -p /home/container/uwsgi_temp
-    mkdir -p /home/container/scgi_temp
-    cp -f /home/container/conf/nginx.conf.default /home/container/conf/nginx.conf
+    touch /home/container/nginx/logs/access.log
+    touch /home/container/nginx/logs/error.log
+    mkdir -p /home/container/nginx/client_body_temp
+    mkdir -p /home/container/nginx/proxy_temp
+    mkdir -p /home/container/nginx/fastcgi_temp
+    mkdir -p /home/container/nginx/uwsgi_temp
+    mkdir -p /home/container/nginx/scgi_temp
+    cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция Nginx прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
