@@ -137,8 +137,8 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) Скачивание и компиляция OpenResty вместе с PHP-FPM"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Скачивание и компиляция Nginx без PHP-FPM"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Скачивание и компиляция Nginx вместе с PHP-FPM"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Скачивание и компиляция чистого PHP-FPM без его настройки"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Выйти"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Скачивание и компиляция чистого PHP-FPM без его настройки"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ6) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
     read -s servertype
@@ -188,6 +188,17 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             echo "SERVER_TYPE=\"nginx with php-fpm\"" > Config
             ;;
         5)
+            clear
+            echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤ\033[1;33mТеперь нам нужно выбрать версию PHP."
+            select_php_version
+            clear
+            download_php $PVER
+            echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для PHP...\nㅤ"
+            cd .eggSystem
+            touch Config
+            echo "SERVER_TYPE=\"vanilla php-fpm\"" > Config
+            ;;
+        6)
             echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
             exit 0
             ;;
@@ -205,11 +216,14 @@ else
         ./php/sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx without php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
         ./php/sbin/php-fpm -c /home/container/php/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
+    elif [ "$SERVER_TYPE" = "vanilla php-fpm" ]; then
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mPHP-FPM были успешно запущен. Все логи PHP-FPM находятся в папке /php/var/log.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для PHP-FPM находятся в папке /php/etc.\nㅤ"
+        ./php/sbin/php-fpm -c /home/container/php/php.ini --daemonize
     fi
 fi
