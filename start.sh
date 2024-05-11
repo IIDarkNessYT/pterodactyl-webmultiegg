@@ -224,6 +224,6 @@ else
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "vanilla php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mPHP-FPM были успешно запущен. Все логи PHP-FPM находятся в папке /php/var/log.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для PHP-FPM находятся в папке /php/etc.\nㅤ"
-        ./php/sbin/php-fpm -c /home/container/php/php.ini --daemonize
+        ./php/sbin/php-fpm -c /home/container/php/php.ini
     fi
 fi
