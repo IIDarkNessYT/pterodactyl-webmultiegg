@@ -62,6 +62,9 @@ download_php() { # Скачивание PHP-FPM
     make install
     mv /home/container/php/etc/php-fpm.conf.default /home/container/php/etc/php-fpm.conf
     mv /home/container/php/etc/php-fpm.d/www.conf.default /home/container/php/etc/php-fpm.d/www.conf
+    if [ grep -q ";daemonize = yes" "/home/container/php/etc/php-fpm.conf" ]; then
+        sed -i "s/;daemonize = yes/daemonize = no/g" "/home/container/php/etc/php-fpm.conf"
+    fi
     cp php.ini-development /home/container/php/php.ini
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция PHP-FPM прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
