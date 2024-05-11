@@ -15,7 +15,6 @@ download_openresty() { # Скачивание OpenResty
     make install
     cp -f /home/container/nginx/conf/nginx.conf.default /home/container/nginx/conf/nginx.conf
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция OpenResty прошла успешно.\nㅤ"
-    ldconfig
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
     rm -rf $OPENRESTY_LATEST
@@ -29,7 +28,7 @@ download_nginx() { # Скачание Nginx
     tar xzf nginx-1.26.0.tar.gz
     cd nginx-1.26.0
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container/nginx --sbin-path=/home/container/sbin/nginx --conf-path=/home/container/nginx/conf/nginx.conf --error-log-path=/home/container/nginx/logs/error.log --http-log-path=/home/container/nginx/logs/access.log --pid-path=/home/container/nginx/logs/nginx.pid --http-client-body-temp-path=/home/container/nginx/client_body_temp --http-proxy-temp-path=/home/container/nginx/proxy_temp --http-fastcgi-temp-path=/home/container/nginx/fastcgi_temp --http-scgi-temp-path=/home/container/nginx/scgi_temp --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-file-aio --with-threads --http-uwsgi-temp-path=/home/container/nginx/uwsgi_temp --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-mail --with-mail_ssl_module 
+    ./configure --prefix=/home/container/nginx --sbin-path=/home/container/nginx/sbin/nginx --conf-path=/home/container/nginx/conf/nginx.conf --error-log-path=/home/container/nginx/logs/error.log --http-log-path=/home/container/nginx/logs/access.log --pid-path=/home/container/nginx/logs/nginx.pid --http-client-body-temp-path=/home/container/nginx/client_body_temp --http-proxy-temp-path=/home/container/nginx/proxy_temp --http-fastcgi-temp-path=/home/container/nginx/fastcgi_temp --http-scgi-temp-path=/home/container/nginx/scgi_temp --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-file-aio --with-threads --http-uwsgi-temp-path=/home/container/nginx/uwsgi_temp --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-mail --with-mail_ssl_module 
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция Nginx. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
@@ -56,20 +55,14 @@ download_php() { # Скачивание PHP-FPM
     tar -xvf php-$1.tar.gz
     cd php-$1
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container --enable-mbstring --with-curl=/usr/include/x86_64-linux-gnu/curl --with-openssl --with-zlib --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --with-config-file-path=/home/container/etc/php-fpm/ --with-config-file-scan-dir=/home/container/etc/php-fpm/php-fpm.d/
+    ./configure --prefix=/home/container/php --enable-mbstring --with-curl=/usr/include/x86_64-linux-gnu/curl --with-openssl --with-zlib --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --with-config-file-path=/home/container/etc/php-fpm/ --with-config-file-scan-dir=/home/container/etc/php-fpm/php-fpm.d/
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция PHP-FPM. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
     sleep 5
     make -j$(nproc)
     make install
-    mv /home/container/etc/php-fpm.conf.default /home/container/etc/php-fpm.conf
-    mv /home/container/etc/php-fpm.d/www.conf.default /home/container/etc/php-fpm.d/www.conf
-    cp php.ini-development /home/container/etc/php.ini
-    php_block="location ~ \\\.php\$ { fastcgi_pass unix:/home/container/var/run/php-fpm.sock; fastcgi_index index.php; include fastcgi_params; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; }"
-    searchB="        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
-    sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
-    sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
-    sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
-    sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/var\/run\/php-fpm.sock/' /home/container/etc/php-fpm.d/www.conf
+    mv /home/container/php/etc/php-fpm.conf.default /home/container/php/etc/php-fpm.conf
+    mv /home/container/php/etc/php-fpm.d/www.conf.default /home/container/php/etc/php-fpm.d/www.conf
+    cp php.ini-development /home/container/php/php.ini
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция PHP-FPM прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     cd ..
@@ -77,22 +70,55 @@ download_php() { # Скачивание PHP-FPM
     rm php-$1.tar.gz
 }
 
+configure_php() { # Настройка PHP-FPM. Данная функция применяется только если пользователь выбрал установку веб-сервера с PHP-FPM.
+    php_block="location ~ \\\.php\$ { fastcgi_pass unix:/home/container/php-fpm.sock; fastcgi_index index.php; include fastcgi_params; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; }"
+    searchB="        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
+    sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
+    sed -i 's/index  index.html index.htm;/index  index.html index.htm index.php;/' /home/container/nginx/conf/nginx.conf
+    sed -i "/^            index  index.html index.htm;/            index  index.html index.htm index.php;" /home/container/nginx/conf/nginx.conf
+    sed -i 's/listen = 127.0.0.1:9000/listen = \/home\/container\/php-fpm.sock/' /home/container/php/etc/php-fpm.d/www.conf
+}
+
 select_php_version() { # Выбор версии PHP
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите версию PHP:\nㅤ"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 7.4.33"
-    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 8.3.6"
-    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Выйти"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ1) PHP 8.3.6"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) PHP 8.2.18"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) PHP 8.1.26"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) PHP 8.0.26"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ5) PHP 7.4.33"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ6) PHP 7.3.33"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ7) PHP 7.2.34"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ8) PHP 7.1.33"
+    echo -en "\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤ9) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
     read -s phpvers
     case $phpvers in
         1)
-            PVER="7.4.33"
-            ;;
-        2)
             PVER="8.3.6"
             ;;
-        3)  
+        2)
+            PVER="8.2.18"
+            ;;
+        3)
+            PVER="8.1.26"
+            ;;
+        4)
+            PVER="8.0.26"
+            ;;
+        5)
+            PVER="7.4.33"
+            ;;
+        6)
+            PVER="7.3.33"
+            ;;
+        7)
+            PVER="7.2.34"
+            ;;
+        8)
+            PVER="7.1.33"
+            ;;
+        9)
             echo -en "\033[32mВыход из среды произведён успешно. Всего доброго!"
             exit 0
             ;;
@@ -103,6 +129,7 @@ select_php_version() { # Выбор версии PHP
 }
 
 if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсутствия этого файла система попросит установить интересующий веб-сервер
+    mkdir -p 
     clear
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤ\033[1;31mДобро пожаловать.\nㅤㅤㅤㅤВас приветствует мастер установки программного обеспечения для веб-серверов расположенных на серверах Pterodactyl."
     echo -en "\n\033[1;33mㅤㅤㅤㅤПожалуйста, выберите интересующий вас веб-сервер для установки:\nㅤ"
@@ -110,6 +137,7 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ2) Скачивание и компиляция OpenResty вместе с PHP-FPM"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ3) Скачивание и компиляция Nginx без PHP-FPM"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Скачивание и компиляция Nginx вместе с PHP-FPM"
+    echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ4) Скачивание и компиляция чистого PHP-FPM без его настройки"
     echo -en "\nㅤㅤㅤㅤㅤㅤㅤㅤ5) Выйти"
     echo -en "\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤ\nㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\033[36mPowered by _DarkNessYT in 2024y."
     echo -en "\nㅤ"
@@ -130,7 +158,8 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             select_php_version
             clear
             download_openresty
-            download_php $PVER openresty
+            download_php $PVER
+            configure_php
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для OpenResty и PHP...\nㅤ"
             cd .eggSystem
             touch Config
@@ -151,7 +180,8 @@ if [ ! -f "/home/container/.eggSystem/Config" ]; then # В случае отсу
             select_php_version
             clear
             download_nginx
-            download_php $PVER nginx
+            download_php $PVER
+            configure_php
             echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт настройка конфигураций для Nginx и PHP...\nㅤ"
             cd .eggSystem
             touch Config
@@ -172,14 +202,14 @@ else
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "openresty with php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mOpenResty и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /nginx/logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для OpenResty находятся в папке /nginx.\nㅤ"
-        ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
+        ./php/sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx without php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
         ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
         echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /conf.\nㅤ"
-        ./sbin/php-fpm -c /home/container/etc/php.ini --daemonize
-        ./sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
+        ./php/sbin/php-fpm -c /home/container/php/php.ini --daemonize
+        ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     fi
 fi
