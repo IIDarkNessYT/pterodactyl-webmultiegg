@@ -2,7 +2,7 @@
 # Функции
 download_openresty() { # Скачивание OpenResty
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива OpenResty...\nㅤ"
-    OPENRESTY_LATEST=$(wget -qO- https://openresty.org/en/download.html | grep -o 'openresty-0-9.*' | head -n 1)
+    OPENRESTY_LATEST=$(curl -s https://openresty.org/en/download.html | grep -o 'openresty-[0-9.]*' | head -n 1)
     wget https://openresty.org/download/$OPENRESTY_LATEST.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива OpenResty...\nㅤ"
     tar xzf $OPENRESTY_LATEST.tar.gz
