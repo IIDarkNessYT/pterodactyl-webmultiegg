@@ -220,10 +220,10 @@ else
         ./php/sbin/php-fpm -c /home/container/etc/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx without php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx был успешно запущен. Все логи находятся в папке /nginx/logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "nginx with php-fpm" ]; then
-        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
+        echo -en "\033[1;33mWebMultiEgg: \033[22;37mNginx и PHP-FPM были успешно запущены. Все логи Nginx находятся в папке /nginx/logs.\n\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНе удаляйте папку .eggSystem, поскольку эта папка хранит данные о вашем сервере и она является ядром для этого сервера.\n\033[1;33mWebMultiEgg: \033[22;37m Файлы конфигурации для Nginx находятся в папке /nginx/conf.\nㅤ"
         ./php/sbin/php-fpm -c /home/container/php/php.ini --daemonize
         ./nginx/sbin/nginx -p '/home/container/nginx/' -g 'daemon off;'
     elif [ "$SERVER_TYPE" = "vanilla php-fpm" ]; then
