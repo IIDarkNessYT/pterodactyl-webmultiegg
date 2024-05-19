@@ -50,30 +50,14 @@ download_nginx() { # Скачание Nginx
 
 download_php() { # Скачивание PHP-FPM
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mИдёт скачивание архива PHP-FPM...\nㅤ"
-    wget https://www.php.net/distributions/php-$1.tar.gz
+    wget https://raw.githubusercontent.com/iidarknessyt/pterodactyl-webmultiegg/main/php-$1.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива PHP-FPM...\nㅤ"
     tar -xvf php-$1.tar.gz
-    cd php-$1
-    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mПодготовка компилятора...\nㅤ"
-    ./configure --prefix=/home/container/php --enable-mbstring --with-curl --with-openssl --with-mysqli --with-pdo-mysql --with-zlib --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --with-config-file-path=/home/container/etc/php-fpm/ --with-config-file-scan-dir=/home/container/etc/php-fpm/php-fpm.d/
-    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[1;31mВНИМАНИЕ! \033[22;37mНачинается компиляция PHP-FPM. Сервер может невыдержать нагрузки либо немного подвисать.\nㅤ"
-    sleep 5
-    make -j$(nproc)
-    make install
-    mv /home/container/php/etc/php-fpm.conf.default /home/container/php/etc/php-fpm.conf
-    mv /home/container/php/etc/php-fpm.d/www.conf.default /home/container/php/etc/php-fpm.d/www.conf
-    if grep -q ";daemonize = yes" "/home/container/php/etc/php-fpm.conf"; then
-        sed -i "s/;daemonize = yes/daemonize = no/g" "/home/container/php/etc/php-fpm.conf"
-    fi
-    cp php.ini-development /home/container/php/php.ini
-    echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;32mКомпиляция PHP-FPM прошла успешно.\nㅤ"
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
-    cd ..
-    rm -rf php-$1
     rm php-$1.tar.gz
 }
 
-configure_php() { # Настройка PHP-FPM. Данная функция применяется только если пользователь выбрал установку веб-сервера с PHP-FPM.
+configure_php() { # Настройка PHP-FPM для Nginx/OpenResty. Данная функция применяется только если пользователь выбрал установку веб-сервера с PHP-FPM.
     php_block="location ~ \\\.php\$ { fastcgi_pass unix:/home/container/php-fpm.sock; fastcgi_index index.php; include fastcgi_params; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; }"
     searchB="        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
     sed -i "/^$searchB/a         $php_block" /home/container/nginx/conf/nginx.conf
