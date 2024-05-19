@@ -53,6 +53,8 @@ download_php() { # Скачивание PHP-FPM
     wget https://raw.githubusercontent.com/iidarknessyt/pterodactyl-webmultiegg/main/php-$1.tar.gz
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mРаспаковка архива PHP-FPM...\nㅤ"
     tar -xvf php-$1.tar.gz
+    mkdir -p /home/container/php/var/log
+    touch /home/container/php/var/log/php-fpm.log
     echo -en "\nㅤㅤㅤㅤ\033[1;33mWebMultiEgg: \033[22;37mОчистка временных файлов...\nㅤ"
     rm php-$1.tar.gz
 }
